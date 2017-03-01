@@ -20,7 +20,7 @@ exit(1);}
 
 /*         /\
           //\\
-THIS THING ||  is a handy debugger that I use to check my self on new material
+THIS THING ||  is a handy debugger that I use to check myself on new material
            ||
 
 */
@@ -102,6 +102,7 @@ typedef struct {
 
 /* MACROS */
 #define FR2SQ(f,r) ((21 + (f)) + ((r)*10)) // Returns equivalent file and rank
+#define SQ64(sq120) Sq120ToSq64[sq120]
 
 /* GLOBALS */
 extern int Sq120ToSq64[BRD_SQ_NUM];  // These declarations are conversion tables between a normal 1-64 chess table
@@ -109,5 +110,6 @@ extern int Sq64ToSq120[64];          // and our weird 1-120 chess table
 
 /* FUNCTIONS */
 extern void AllInit();
+extern void PrintBitBoard(U64 bb);
 
 #endif
