@@ -1,6 +1,4 @@
-#include <iostream>
 #include "defs.h"
-using namespace std;
 
 int Sq120ToSq64[BRD_SQ_NUM];  // These declarations are conversion tables between a normal 1-64 chess table
 int Sq64ToSq120[64];          // and our weird 1-120 chess table
@@ -27,29 +25,6 @@ void InitSq120To64(){
   }
 }
 
-void Allinit(){
+void AllInit(){
   InitSq120To64();
-}
-
-int main()
-{
-  Allinit();
-
-  for(int i=0; i<BRD_SQ_NUM; i++){
-    if(i%10==0){
-      cout << endl;
-    }
-    cout << Sq120ToSq64[i] << "\t";
-  }
-  cout << endl << endl;
-
-  for(int i=0; i<64; i++)
-  {
-    if(i%8==0){
-      cout << endl;
-    }
-    cout << Sq64ToSq120[i] << "\t";
-  }
-
-  return 0;
 }
