@@ -1,12 +1,36 @@
 #ifndef DEFS_H
 #define DEFS_H
 
-typedef unsigned long long U64;
+#include <stdlib.h>
+////////////////////////////////////////////////////////////////
+#define DEBUG
+#ifndef DEBUG
+#define ASSERT(n)
+#else
+#define ASSERT(n) \
+if(!(n)) { \
+printf("%s - Failed", #n); \
+printf("On %s ",__DATE__); \
+printf("At %s ",__TIME__); \
+printf("In file %s ",__FILE__); \
+printf("At Line %d\n",__LINE__); \
+exit(1);}
+#endif
+///////////////////////////////////////////////////////////////
 
-#define NAME "Vice 1.0"
+/*         /\
+          //\\
+THIS THING ||  is a handy debugger that I use to check my self on new material
+           ||
+
+*/
+
+typedef unsigned long long U64; // Using every 8 digits to count as occupied pieces on corresponding rows
+
+#define NAME "ChessEngine 1.0"
 #define BRD_SQ_NUM 120
 
-#define MAXGAMEMOVES 2048
+#define MAXGAMEMOVES 2048 // The longest game recorded was just over 1000 moves, or 2000 half moves
 
 enum { EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bR, bQ, bK};
 enum { FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NONE};
@@ -45,30 +69,45 @@ typedef struct {
 
 typedef struct {
 
-  int pieces[BRD_SQ_NUM]; //What is on the board
-  U64 pawns[3]; //White, black and both 1 or 0 if it occupies rank and row
-                //01000000 00000000 00000000 00000000 00000000 ...
+  int pieces[BRD_SQ_NUM]; // What is on the board
+  U64 pawns[3]; // White, black and both 1 or 0 if it occupies rank and row
+                // 01000000 00000000 00000000 00000000 00000000 ...
 
-  int KingSq[2]; //Good to hold the square that the king is in
+  int KingSq[2]; // Good to hold the square that the king is in
 
-  int side; //Current side to move
-  int enPas; //En'Passant square if one is not active, set to NO_SQ
-  int fiftyMove; //Game is drawn after 50 moves
+  int side; // Current side to move
+  int enPas; // En'Passant square if one is not active, set to NO_SQ
+  int fiftyMove; // Game is drawn after 50 moves
 
-  int ply; //How many half moves we are in to the current search
-  int hisPly; //Total number of half moves
+  int ply; // How many half moves we are in to the current search
+  int hisPly; // Total number of half moves
 
-  int castlePerm; //If rook or king is moved, castling is no longer possible
+  int castlePerm; // If rook or king is moved, castling is no longer possible
 
-  U64 posKey; //A unique key that is generated for each position
+  U64 posKey; // A unique key that is generated for each position
 
-  int pceNum[13]; //The number of pieces on the board indexed by piece type. Black king is index 12
-  int bigPce[3]; //Number of pieces that aren't a pawn
-  int majPce[3]; //Nmber of rooks and queens
-  int minPce[3]; //Number of bishops and rooks
+  int pceNum[13]; // The number of pieces on the board indexed by piece type. Black king is index 12
+  int bigPce[3];  // Number of pieces that aren't a pawn
+  int majPce[3];  // Nmber of rooks and queens
+  int minPce[3];  // Number of bishops and rooks
 
-  S_UNDO history[MAXGAMEMOVES]; //Every time a move is made, we will store the values specified by the S_UNDO
+  S_UNDO history[MAXGAMEMOVES]; // Every time a move is made, we will store the values specified by the S_UNDO
+
+  // Piece list increases solution speed by about 20%. Optimizes search techniques
+  int pList[13][10];
+
+
 
 } S_BOARD;
+
+/* MACROS */
+#define FR2SQ(f,r) ((21 + (f)) + ((r)*10)) // Returns equivalent file and rank
+
+/* GLOBALS */
+extern int Sq120ToSq64[BRD_SQ_NUM];  // These declarations are conversion tables between a normal 1-64 chess table
+extern int Sq64ToSq120[64];          // and our weird 1-120 chess table
+
+/* FUNCTIONS */
+extern void AllInit();
 
 #endif
