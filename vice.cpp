@@ -1,23 +1,16 @@
 #include <iostream>
+#include <stdlib.h>
 #include "defs.h"
 using namespace std;
 
 int main()
 {
-  AllInit();
+    AllInit();
 
-  U64 playBitBoard = 0ULL;
+    int index = 0;
 
-  cout << "Start: " << endl;
-  PrintBitBoard(playBitBoard);
+    U64 playBitBoard = 0ULL;
 
-  playBitBoard |= (1ULL << SQ64(D2));
-  cout << "D2 Added: " << endl << endl;
-  PrintBitBoard(playBitBoard);
-
-  playBitBoard |= (1ULL << SQ64(G2));
-  cout << "G2 Added: " << endl << endl;
-  PrintBitBoard(playBitBoard);
-
-  return 0;
+    
+    return 0;
 }
